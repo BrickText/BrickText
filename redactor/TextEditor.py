@@ -4,7 +4,7 @@ from tkinter import *
 class TextEditor():
     def __init__(self):
         self.root = Tk()
-        # screenName='BrickText'
+        self.root.wm_title("BrickText")
         self.editor = Text(self.root)
 
     def start(self):
