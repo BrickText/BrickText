@@ -9,7 +9,6 @@ class Coloring:
         self.text_widget = text_editor.get_text_panel()
         self.keywords = config_tags(self.text_widget, language)
         self.pattern = r"\w+"
-        self.root.after(200, self.findall)
 
     def coloring(self, indices):
         for f, l in indices:
@@ -38,5 +37,3 @@ class Coloring:
                 indices.append((match_start, match_end))
 
         self.coloring(indices)
-
-        self.root.after(200, self.findall)
