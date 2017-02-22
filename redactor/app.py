@@ -1,7 +1,9 @@
 from tkinter import *
+
 from redactor.TextEditor import TextEditor
 from menu.AppMenu import AppMenu
 from redactor.ResizingCanvas import ResizingCanvas
+from coloring.Coloring import Coloring
 
 # Move to setting file
 
@@ -22,6 +24,7 @@ def main():
                    width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT,
                    bg="red")
     AppMenu(editor.get_root(), editor.get_text_panel())
+    Coloring(editor, 'python')
     editor.start()
 
 
