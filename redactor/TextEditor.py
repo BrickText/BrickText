@@ -13,6 +13,9 @@ class TextEditor():
 
     def get_root(self):
         return self.root
+    
+    def get_text_widget(self):
+        return self.editor
 
     def get_text_panel(self):
         return self.text_panel
