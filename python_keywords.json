@@ -31,5 +31,6 @@
     'try': 'red',
     'while': 'red',
     'with': 'red',
-    'yield': 'red'
+    'yield': 'red',
+    'functions': 'red'
 }
