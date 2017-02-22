@@ -8,6 +8,7 @@ class AppMenu(Frame):
     It will create the following menus with the following featues:
     File -> Open(opens file), Save(Saves current file), Save as(Same as Save)
     """
+
     def __init__(self, root, text_panel):
         Frame.__init__(self, root)
         self.root = root
@@ -31,9 +32,9 @@ class AppMenu(Frame):
     # Opens file
     def open(self):
         # askopenfile return opened file however can't access it
-        with askopenfile(mode='w+') as f:
-            for line in f:
-                print(line)
+        with askopenfile(parent=self.root, mode='rb',
+                         title='Select a file') as file:
+            self.text_panel.insert('1.0', file.read())
 
     # Saves current file
     def save(self):
