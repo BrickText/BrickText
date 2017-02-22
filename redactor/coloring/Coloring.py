@@ -8,7 +8,7 @@ class Coloring:
         self.root = text_editor.get_root()
         self.text_widget = text_editor.get_text_panel()
         self.keywords = config_tags(self.text_widget, language)
-        self.pattern = r"\w+"
+        self.pattern = r"\w+\(|\w+"
 
     def coloring(self, indices):
         for f, l in indices:
@@ -19,7 +19,15 @@ class Coloring:
             else:
                 for k, _ in self.keywords.items():
                     self.text_widget.tag_remove(k, f, l)
-                self.text_widget.tag_add('blank', f, l)
+                pos = word.find('(')
+                if pos > 0:
+                    fs = f.split('.')
+                    self.text_widget.tag_remove('blank', f, l)
+                    self.text_widget.tag_add('functions', f,
+                                             '{}.{}'.format(fs[0],
+                                                            int(fs[1]) + pos))
+                else:
+                    self.text_widget.tag_add('blank', f, l)
 
     def findall(self, start="1.0", end="end"):
         start = self.text_widget.index(start)
