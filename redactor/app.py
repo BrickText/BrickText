@@ -4,6 +4,7 @@ from redactor.TextEditor import TextEditor
 from menu.AppMenu import AppMenu
 from redactor.ResizingCanvas import ResizingCanvas
 from coloring.Coloring import Coloring
+from set_lines.Lines import Lines
 
 # Move to setting file
 
@@ -11,11 +12,13 @@ DEFAULT_WIDTH = 850
 DEFAULT_HEIGHT = 400
 
 
-def refresher(root):
+def refresher(root, colors, lines):
     """
     The main block which will operate with the text in the editor
     """
-    root.after(0, refresher(root))
+    lines.updateAllLineNumbers()
+    colors.findall()
+    root.after(200, refresher, root, colors, lines)
 
 
 def main():
@@ -24,7 +27,9 @@ def main():
                    width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT,
                    bg="red")
     AppMenu(editor.get_root(), editor.get_text_panel())
-    Coloring(editor, 'python')
+    lines = Lines(editor.get_root(), editor.get_text_panel())
+    colors = Coloring(editor, 'python')
+    refresher(editor.get_root(), colors, lines)
     editor.start()
 
 

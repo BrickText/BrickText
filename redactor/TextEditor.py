@@ -6,7 +6,7 @@ class TextEditor():
         self.root = Tk()
         self.root.wm_title("BrickText")
         self.text_panel = Text(self.root)
-        self.text_panel.pack(fill=BOTH, expand=YES)
+        self.text_panel.pack(side=RIGHT, fill=BOTH, expand=YES)
 
     def start(self):
         self.root.mainloop()
