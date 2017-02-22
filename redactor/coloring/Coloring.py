@@ -6,7 +6,7 @@ from coloring.config_tags import config_tags
 class Coloring:
     def __init__(self, text_editor, language):
         self.root = text_editor.get_root()
-        self.text_widget = text_editor.get_text_widget()
+        self.text_widget = text_editor.get_text_panel()
         self.keywords = config_tags(self.text_widget, language)
         self.pattern = r"\w+"
         self.root.after(200, self.findall)
