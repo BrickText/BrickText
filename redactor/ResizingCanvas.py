@@ -14,9 +14,11 @@ class ResizingCanvas(Canvas):
 
         root.mainloop()
     """
-    def __init__(self, parent, **kwargs):
-        Canvas.__init__(self, parent, **kwargs)
+
+    def __init__(self, text_panel, root, **kwargs):
+        Canvas.__init__(self, text_panel, **kwargs)
         self.bind("<Configure>", self.on_resize)
+        self.root = root
         self.height = self.winfo_reqheight()
         self.width = self.winfo_reqwidth()
 
@@ -24,3 +26,10 @@ class ResizingCanvas(Canvas):
         self.width = event.width
         self.height = event.height
         self.config(width=self.width, height=self.height)
+
+    def zoom_in_scale(self):
+        print('Zoom in scale called')
+        self.scale("all", self.height, self.width, 2, 2)
+
+    def zoom_out_scale(self):
+        self.scale("all", -2, -2)
