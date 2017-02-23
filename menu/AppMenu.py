@@ -88,6 +88,7 @@ class AppMenu(Frame):
             full_text = self.text_panel.get("1.0", END)
             with open(filename, 'w') as f:
                 f.write(full_text)
+        self.filename = filename
 
     def exit(self):
         self.root.destroy()
