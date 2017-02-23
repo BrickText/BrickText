@@ -8,7 +8,7 @@ class Coloring:
         self.root = text_editor.get_root()
         self.text_widget = text_editor.get_text_panel()
         self.keywords = config_tags(self.text_widget, language)
-        self.pattern = r"\w+\(|\w+|\'\w+\'|\"\w+\""
+        self.pattern = r"\w+\(|\w+|([\"'])(?:(?=(\\?))\2.)*?\1"
 
     def coloring(self, indices):
         for f, l in indices:
