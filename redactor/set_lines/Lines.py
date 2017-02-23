@@ -1,10 +1,12 @@
 from tkinter import *
+from settings.SettingsVariables import settings
 
 
 class Lines:
     def __init__(self, root, text_panel):
         self.root = root
         self.text_panel = text_panel
+        self.font = font.Font(size=settings['letter_size'])
         self.lnText = Text(self.root,
                            width=4,
                            padx=4,
@@ -13,7 +15,8 @@ class Lines:
                            bd=0,
                            background='lightgrey',
                            foreground='magenta',
-                           state='disabled')
+                           state='disabled',
+                           font=self.font)
         self.lnText.pack(side=LEFT, fill='y')
         self.lineNumbers = ''
 
@@ -22,11 +25,11 @@ class Lines:
         col = ''
         ln = ''
         # assume each line is at least 6 pixels high
-        step = 6
+        self.step = settings['letter_size']
         nl = '\n'
         lineMask = '    %s\n'
         indexMask = '@0,%d'
-        for i in range(0, self.text_panel.winfo_height(), step):
+        for i in range(0, self.text_panel.winfo_height(), self.step):
             ll, cc = self.text_panel.index(indexMask % i).split('.')
             if line == ll:
                 if col != cc:

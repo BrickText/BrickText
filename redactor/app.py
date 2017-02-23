@@ -5,15 +5,11 @@ from menu.AppMenu import AppMenu
 from redactor.ResizingCanvas import ResizingCanvas
 from coloring.Coloring import Coloring
 from set_lines.Lines import Lines
-
-# Move to setting file
-
-DEFAULT_WIDTH = 850
-DEFAULT_HEIGHT = 400
+from settings.SettingsVariables import settings
 
 
 def refresher(root, colors, lines):
-    """ 
+    """
     The main block which will operate with the text in the editor
     """
     lines.updateAllLineNumbers()
@@ -23,11 +19,12 @@ def refresher(root, colors, lines):
 
 def main():
     editor = TextEditor()
-    canvas = ResizingCanvas(editor.get_text_panel(), editor.get_root(),
-                            width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT,
-                            bg="red")
-    AppMenu(editor.get_root(), editor.get_text_panel(), canvas)
+    ResizingCanvas(editor.get_text_panel(), editor.get_root(),
+                   width=settings["DEFAULT_WIDTH"],
+                   height=settings["DEFAULT_WIDTH"],
+                   bg="red")
     lines = Lines(editor.get_root(), editor.get_text_panel())
+    AppMenu(editor.get_root(), editor.get_text_panel(), editor, lines)
     colors = Coloring(editor, 'python')
     refresher(editor.get_root(), colors, lines)
     editor.start()

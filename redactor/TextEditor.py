@@ -1,12 +1,15 @@
 from tkinter import *
 from tkinter import font
 
+from settings.SettingsVariables import settings
+
 
 class TextEditor():
     def __init__(self):
         self.root = Tk()
         self.root.wm_title("BrickText")
-        self.text_panel = Text(self.root)
+        self.font = font.Font(size=settings["letter_size"])
+        self.text_panel = Text(self.root, font=self.font)
         self.text_panel.pack(side=RIGHT, fill=BOTH, expand=YES)
         self.set_tabs()
 

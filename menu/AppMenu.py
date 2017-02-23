@@ -13,11 +13,12 @@ class AppMenu(Frame):
     Edit -> Cut, Copy, Paste
     """
 
-    def __init__(self, root, text_panel, text):
+    def __init__(self, root, text_panel, text, lines):
         Frame.__init__(self, root)
         self.root = root
         self.text_panel = text_panel
         self.text = text
+        self.lines = lines
 
         self.menubar = Menu(root)
         self.gen_filemenu()
@@ -52,7 +53,7 @@ class AppMenu(Frame):
         self.menubar.add_cascade(label="Edit", menu=editmenu)
 
     def gen_viewmenu(self):
-        functionality = ViewCommands(self.root, self.text)
+        functionality = ViewCommands(self.root, self.text, self.lines)
         viewmenu = Menu(self.menubar, tearoff=0)
 
         viewmenu.add_command(label='Zoom in', command=functionality.zoom_in)
