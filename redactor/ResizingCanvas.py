@@ -26,10 +26,4 @@ class ResizingCanvas(Canvas):
         self.width = event.width
         self.height = event.height
         self.config(width=self.width, height=self.height)
-
-    def zoom_in_scale(self):
-        print('Zoom in scale called')
-        self.scale("all", self.height, self.width, 2, 2)
-
-    def zoom_out_scale(self):
-        self.scale("all", -2, -2)
+        self.scale("all", 0, 0, 1.1, 1.1)

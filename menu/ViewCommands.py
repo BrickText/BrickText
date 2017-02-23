@@ -2,17 +2,21 @@ from tkinter import *
 
 
 class ViewCommands(Text):
-    def __init__(self, root, canvas, **kwargs):
+    def __init__(self, root, text_editor, **kwargs):
         """
         Class for all the edit commands of the text editor.
         """
         Text.__init__(self, root, **kwargs)
-        self.canvas = canvas
-        self.bind('<Control-Key-1>', self.zoom_in)
-        self.bind('<Control-Key-2>', self.zoom_out)
+        self.text_editor = text_editor
+        # self.bind('<Control->', self.zoom_in)
+        # self.bind('<Control->', self.zoom_out)
+        self.size = 16
 
     def zoom_in(self):
-        self.canvas.zoom_in_scale()
+        self.size += 1
+        self.text_editor.font.configure(size=self.size)
 
     def zoom_out(self):
-        self.canvas.zoom_out_scale()
+        print('Zoom out to {}'.format(self.size))
+        self.size -= 1
+        self.text_editor.font.configure(size=self.size)
