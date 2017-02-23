@@ -8,7 +8,7 @@ class Coloring:
         self.root = text_editor.get_root()
         self.text_widget = text_editor.get_text_panel()
         self.keywords = config_tags(self.text_widget, language)
-        self.pattern = r"\w+\(|\w+"
+        self.pattern = r"\w+\(|\w+|\'\w+\'|\"\w+\""
 
     def coloring(self, indices):
         for f, l in indices:
@@ -17,15 +17,30 @@ class Coloring:
                 self.text_widget.tag_remove('blank', f, l)
                 self.text_widget.tag_add(word, f, l)
             else:
+                fs = f.split('.')
+                ls = l.split('.')
                 for k, _ in self.keywords.items():
                     self.text_widget.tag_remove(k, f, l)
                 pos = word.find('(')
                 if pos > 0:
-                    fs = f.split('.')
                     self.text_widget.tag_remove('blank', f, l)
-                    self.text_widget.tag_add('functions', f,
-                                             '{}.{}'.format(fs[0],
-                                                            int(fs[1]) + pos))
+                    self.text_widget\
+                        .tag_add('functions', f,
+                                 '{}.{}'.format(fs[0], int(fs[1]) + pos))
+                elif word[0] == '\'':
+                    if word[-1] == '\'':
+                        self.text_widget.tag_remove('blank', f, l)
+                        self.text_widget\
+                            .tag_add('string',
+                                     '{}.{}'.format(fs[0], int(fs[1]) + 1),
+                                     '{}.{}'.format(ls[0], int(ls[1]) - 1))
+                elif word[0] == '"':
+                    if word[-1] == '\"':
+                        self.text_widget.tag_remove('blank', f, l)
+                        self.text_widget\
+                            .tag_add('string',
+                                     '{}.{}'.format(fs[0], int(fs[1]) + 1),
+                                     '{}.{}'.format(ls[0], int(ls[1]) - 1))
                 else:
                     self.text_widget.tag_add('blank', f, l)
 

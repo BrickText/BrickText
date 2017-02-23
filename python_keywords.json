@@ -29,8 +29,10 @@
     'raise': 'red',
     'return': 'red',
     'try': 'red',
+    'self': 'green',
     'while': 'red',
     'with': 'red',
     'yield': 'red',
-    'functions': 'red'
+    'functions': 'red',
+    'string': 'red'
 }
