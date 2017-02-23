@@ -10,15 +10,17 @@ class ViewCommands(Text):
         Text.__init__(self, root, **kwargs)
         self.text_editor = text_editor
         self.lines = lines
-        # self.bind('<Control->', self.zoom_in)
-        # self.bind('<Control->', self.zoom_out)
+        root.bind('<Control-p>', self.zoom_in)
+        root.bind('<Control-m>', self.zoom_out)
 
-    def zoom_in(self):
+    def zoom_in(self, *args, **kwargs):
         settings['letter_size'] += 2
         self.text_editor.font.configure(size=settings['letter_size'])
+        self.lines.font.configure(size=settings["letter_size"])
         self.lines.step = settings['letter_size']
 
-    def zoom_out(self):
+    def zoom_out(self, *args, **kwargs):
         settings['letter_size'] -= 1
         self.text_editor.font.configure(size=settings['letter_size'])
+        self.lines.font.configure(size=settings['letter_size'])
         self.lines.step = settings['letter_size']
