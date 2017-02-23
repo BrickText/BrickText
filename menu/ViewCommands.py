@@ -16,9 +16,11 @@ class ViewCommands(Text):
     def zoom_in(self):
         settings['letter_size'] += 2
         self.text_editor.font.configure(size=settings['letter_size'])
+        self.lines.font.configure(seze=settings["letter_size"])
         self.lines.step = settings['letter_size']
 
     def zoom_out(self):
         settings['letter_size'] -= 1
         self.text_editor.font.configure(size=settings['letter_size'])
+        self.lines.font.configure(size=settings['letter_size'])
         self.lines.step = settings['letter_size']
