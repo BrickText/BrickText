@@ -83,6 +83,7 @@ class AppMenu(Frame):
         self.filename = file.name
         if file is not None:
             contents = file.read()
+            self.text_panel.delete('1.0', END)
             self.text_panel.insert('1.0', contents)
             file.close()
 
