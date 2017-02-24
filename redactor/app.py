@@ -1,4 +1,7 @@
 from tkinter import *
+from sys import argv
+import os
+
 
 from redactor.TextEditor import TextEditor
 from menu.AppMenu import AppMenu
@@ -24,8 +27,17 @@ def main():
                    height=settings["DEFAULT_WIDTH"],
                    bg="red")
     lines = Lines(editor.get_root(), editor.get_text_panel())
+    if len(argv) > 1:
+        print(argv[1])
+        cwd = os.getcwd()
+        path = cwd + '/' + argv[1]
+        contents = ''
+        with open(path, "r+") as f:
+            contents = f.read()
+        editor.get_text_panel().insert('1.0', contents)
+        menu.filename = path
     colors = Coloring(editor, 'python')
-    AppMenu(editor.get_root(), editor.get_text_panel(), colors, editor, lines)
+    menu = AppMenu(editor.get_root(), editor.get_text_panel(), colors, editor, lines)
     refresher(editor.get_root(), colors, lines)
     editor.start()
 
