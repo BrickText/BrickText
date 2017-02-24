@@ -1,8 +1,10 @@
 from tkinter import *
 from tkinter.filedialog import asksaveasfilename, askopenfile
+from tkinter.colorchooser import *
 
 from menu.EditCommands import EditCommands
 from menu.ViewCommands import ViewCommands
+from settings.LanguageSettings import languages
 
 
 class AppMenu(Frame):
@@ -19,11 +21,14 @@ class AppMenu(Frame):
         self.text_panel = text_panel
         self.text = text
         self.lines = lines
+        self.number_of_windows = 0
+        self.new_keywords = {}
 
         self.menubar = Menu(root)
         self.gen_filemenu()
         self.gen_editmenu()
         self.gen_viewmenu()
+        self.gen_preferencesmenu()
 
         self.filename = ''
         root.config(menu=self.menubar)
@@ -61,6 +66,16 @@ class AppMenu(Frame):
 
         self.menubar.add_cascade(label='View', menu=viewmenu)
 
+    def gen_preferencesmenu(self):
+        preferencesmenu = Menu(self.menubar, tearoff=0)
+
+        preferencesmenu.add_command(label="Language preferences",
+                                    command=self.language_preferences)
+        # preferencesmenu.add_command(label="Editor preferences",
+        #                             command=self.editor_preferences)
+
+        self.menubar.add_cascade(label="Preferences", menu=preferencesmenu)
+
     # Opens file
     def open(self):
         file = askopenfile(parent=self.root, mode='rb',
@@ -95,3 +110,28 @@ class AppMenu(Frame):
 
     def get_file_language(self):
         return self.filename.split('.')[1] if self.filename else False
+
+    def language_preferences(self):
+        self.number_of_windows += 1
+        self.t = Toplevel(self)
+        self.t.wm_title('Language preferences')
+        with open('settings/{}_keywords.json'
+                  .format(languages[self.get_file_language()])) as data_file:
+            keywords = eval(data_file.read())
+        for k, _ in keywords.items():
+            l = Label(self.t, text=k)
+            l.pack(side='top', padx=10, pady=10)
+            b = Button(self.t, text='Select Color', command=self.getColor)
+            b.pack(side='top', padx=10, pady=10)
+        b = Button(self.t, text='Ok', command=self.close)
+        b.pack()
+
+    def editor_preferences(self):
+        print("editor")
+
+    def getColor(self, keyword):
+        color = askcolor()
+        print(color)
+
+    def close(self):
+        self.t.destroy()
