@@ -1,14 +1,19 @@
 import re
 
-from coloring.config_tags import config_tags
+from coloring.config_tags import config_tags, reset_tags
 
 
 class Coloring:
     def __init__(self, text_editor, language):
         self.root = text_editor.get_root()
         self.text_widget = text_editor.get_text_panel()
+        self.language = language
         self.keywords = config_tags(self.text_widget, language)
         self.pattern = r"\w+\(|\w+|([\"'])(?:(?=(\\?))\2.)*?\1"
+
+    def reset_tags(self, new_language):
+        self.keywords = reset_tags(self.text_widget, new_language,
+                                   self.language)
 
     def coloring(self, indices):
         for f, l in indices:

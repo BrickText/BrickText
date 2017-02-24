@@ -24,8 +24,8 @@ def main():
                    height=settings["DEFAULT_WIDTH"],
                    bg="red")
     lines = Lines(editor.get_root(), editor.get_text_panel())
-    AppMenu(editor.get_root(), editor.get_text_panel(), editor, lines)
     colors = Coloring(editor, 'python')
+    AppMenu(editor.get_root(), editor.get_text_panel(), colors, editor, lines)
     refresher(editor.get_root(), colors, lines)
     editor.start()
 

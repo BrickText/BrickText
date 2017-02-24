@@ -19,4 +19,4 @@ def reset_tags(text_widget, language, prev_language=None):
         for k, v in keywords.items():
             text_widget.tag_delete(k)
 
-    config_tags(text_widget, language)
+    return config_tags(text_widget, language)
