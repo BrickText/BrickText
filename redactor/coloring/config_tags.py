@@ -11,10 +11,12 @@ def config_tags(text_widget, language):
     return keywords
 
 
-def reset_tags(text_widget, prev_language, language):
-    with open('settings/{}_keywords.json'.format(prev_language)) as data_file:
-        keywords = eval(data_file.read())
-    for k, v in keywords.items():
-        text_widget.tag_delete(k)
+def reset_tags(text_widget, language, prev_language=None):
+    if prev_language:
+        with open('settings/{}_keywords.json'
+                  .format(prev_language)) as data_file:
+            keywords = eval(data_file.read())
+        for k, v in keywords.items():
+            text_widget.tag_delete(k)
 
     config_tags(text_widget, language)
