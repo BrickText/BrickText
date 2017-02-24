@@ -15,10 +15,11 @@ class AppMenu(Frame):
     Edit -> Cut, Copy, Paste
     """
 
-    def __init__(self, root, text_panel, text, lines):
+    def __init__(self, root, text_panel, color, text, lines):
         Frame.__init__(self, root)
         self.root = root
         self.text_panel = text_panel
+        self.color = color
         self.text = text
         self.lines = lines
         self.number_of_windows = 0
@@ -85,6 +86,7 @@ class AppMenu(Frame):
             contents = file.read()
             self.text_panel.delete('1.0', END)
             self.text_panel.insert('1.0', contents)
+            self.color.reset_tags(languages[self.get_file_language()])
             file.close()
 
     # Saves current file
@@ -116,6 +118,8 @@ class AppMenu(Frame):
         self.number_of_windows += 1
         self.t = Toplevel(self)
         self.t.wm_title('Language preferences')
+        # vsb = Scrollbar(self.t, orient="vertical")
+        # vsb.pack(side="right", fill="y")
         with open('settings/{}_keywords.json'
                   .format(languages[self.get_file_language()])) as data_file:
             keywords = eval(data_file.read())
