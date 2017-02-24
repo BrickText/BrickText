@@ -24,6 +24,8 @@ class AppMenu(Frame):
         self.lines = lines
         self.number_of_windows = 0
         self.new_keywords = {}
+        self.color_keyword = None
+        self.keyword = None
 
         self.menubar = Menu(root)
         self.gen_filemenu()
@@ -118,25 +120,33 @@ class AppMenu(Frame):
         self.number_of_windows += 1
         self.t = Toplevel(self)
         self.t.wm_title('Language preferences')
-        # vsb = Scrollbar(self.t, orient="vertical")
+        l = Label(self.t, text='Keyword')
+        l.pack(side='top', padx=10, pady=10)
+        self.e = Entry(self.t)
+        self.e.pack(side='top')
+        b = Button(self.t, text='Select Color', command=self.getColor)
+        b.pack(side='top', padx=10, pady=10)
+        #     b.pack(side='top', padx=10, pady=10)
+        # vsb = Scrollbar(self.t, orient="vertical", command=self.t.yview)
         # vsb.pack(side="right", fill="y")
-        with open('settings/{}_keywords.json'
-                  .format(languages[self.get_file_language()])) as data_file:
-            keywords = eval(data_file.read())
-        for k, _ in keywords.items():
-            l = Label(self.t, text=k)
-            l.pack(side='top', padx=10, pady=10)
-            b = Button(self.t, text='Select Color', command=self.getColor)
-            b.pack(side='top', padx=10, pady=10)
-        b = Button(self.t, text='Ok', command=self.close)
-        b.pack()
+        # with open('settings/{}_keywords.json'
+        #           .format(languages[self.get_file_language()])) as data_file:
+        #     keywords = eval(data_file.read())
+        # for k, _ in keywords.items():
+        #     l = Label(self.t, text=k)
+        #     l.pack(side='top', padx=10, pady=10)
+        #     b = Button(self.t, text='Select Color', command=self.getColor)
+        #     b.pack(side='top', padx=10, pady=10)
+        # b = Button(self.t, text='Ok', command=self.close)
+        # b.pack()
 
-    def editor_preferences(self):
-        print("editor")
+    # def editor_preferences(self):
+    #     print("editor")
 
-    def getColor(self, keyword):
-        color = askcolor()
-        print(color)
+    def getColor(self):
+        self.color_keyword = askcolor()[1]
+        self.keyword = self.e.get()
+        # print(color)
 
     def close(self):
         self.t.destroy()
