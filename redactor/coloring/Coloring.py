@@ -13,12 +13,20 @@ class Coloring:
     def coloring(self, indices):
         for f, l in indices:
             word = self.text_widget.get(f, l)
+            pos = word.find('(')
+            fs = f.split('.')
+            ls = l.split('.')
+            w = ''
+            if pos > 0:
+                w = word[:-(len(word) - pos)]
             if word in self.keywords.keys():
                 self.text_widget.tag_remove('blank', f, l)
                 self.text_widget.tag_add(word, f, l)
+            elif w in self.keywords.keys():
+                self.text_widget.tag_remove('blank', f, l)
+                self.text_widget\
+                    .tag_add(w, f, '{}.{}'.format(fs[0], int(fs[1]) + pos))
             else:
-                fs = f.split('.')
-                ls = l.split('.')
                 for k, _ in self.keywords.items():
                     self.text_widget.tag_remove(k, f, l)
                 pos = word.find('(')
