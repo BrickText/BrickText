@@ -52,6 +52,7 @@ def main():
             contents = f.read()
         editor.get_text_panel().insert('1.0', contents)
         menu.filename = path
+        colors.reset_tags(languages[menu.get_file_language()])
     refresher(editor.get_root(), colors, lines, menu)
     editor.start()
 
