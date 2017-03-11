@@ -1,2 +1,2 @@
 # BrickText
-Revolution text editor
+Revolutionary text editor
