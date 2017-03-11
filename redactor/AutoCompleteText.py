@@ -2,13 +2,12 @@ from tkinter import *
 import re
 import ast
 
-
 class AutocompleteText(Text):
 
     def __init__(self, *args, **kwargs):
         Text.__init__(self, *args, **kwargs)
         self.lista = set()
-        self.bind("<Control-space>", self.called_autocomplete)
+        self.bind("<Control-space>", self.called_autocomplete) 
         self.lb_on = False
 
     def called_autocomplete(self, event):
@@ -72,15 +71,3 @@ class AutocompleteText(Text):
                     self.lista.add(node.id)
         except:
             print('Highlight line for bad syntax')
-
-def main():
-    root = Tk()
-
-    text = AutocompleteText(root)
-    text.pack()
-
-    root.mainloop()
-
-
-if __name__ == '__main__':
-    main()

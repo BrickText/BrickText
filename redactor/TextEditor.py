@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import font
 
 from settings.SettingsVariables import settings
+from redactor.AutoCompleteText import AutocompleteText
 
 
 class TextEditor():
@@ -9,7 +10,7 @@ class TextEditor():
         self.root = Tk()
         self.root.wm_title("BrickText")
         self.font = font.Font(size=settings["letter_size"])
-        self.text_panel = Text(self.root, font=self.font)
+        self.text_panel = AutocompleteText(self.root, font=self.font)
         self.text_panel.pack(side=RIGHT, fill=BOTH, expand=YES)
         self.set_tabs()
 
