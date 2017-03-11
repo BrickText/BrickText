@@ -34,7 +34,7 @@ class ResizingCanvas(Canvas):
 class AutocompleteEntry(Text):
     def __init__(self, *args, **kwargs):
 
-        Entry.__init__(self, *args, **kwargs)
+        Text.__init__(self, *args, **kwargs)
         self.lista = ''
         self.var = self["textvariable"]
         if self.var == '':
