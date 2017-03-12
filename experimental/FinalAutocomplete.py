@@ -5,16 +5,40 @@ import ast
 
 class AutocompleteText(Text):
 
-    def __init__(self, *args, **kwargs):
-        Text.__init__(self, *args, **kwargs)
+    def __init__(self, root, *args, **kwargs):
+        Text.__init__(self, root, *args, **kwargs)
         self.lista = set()
+        self.root = root
         self.bind("<Control-space>", self.called_autocomplete)
         self.lb_on = False
 
     def called_autocomplete(self, event):
         requested_word = self.get('1.0', END).strip().split()[-1]
         self.take_lista()
-        self.generate_listbox(self.suitable_words(requested_word))
+        # self.generate_listbox(self.suitable_words(requested_word))
+        self.suggestion_menu(self.suitable_words(requested_word))
+
+    def suggestion_menu(self, words):
+        self.sugg_menu = Menu(self.root)
+        for w in words:
+            self.sugg_menu.add_command(label=w,
+                                       command=lambda: self.insert_w(w))
+        self.sugg_menu.tk_popup(x=self.root.winfo_x(), y=self.root.winfo_y())
+
+    def insert_w(self, w):
+        print('Inserting....', w)
+        start_pos = self.index(INSERT)
+        while(True):
+            start_ind2 = start_pos.split('.')[1]
+            start_ind2 = str(int(start_ind2) - 1)
+            start_pos = start_pos.split('.')[0] + '.' + start_ind2
+            if start_ind2 == '0' or\
+                    not re.match(r"\s", self.get(start_pos)):
+                break
+        print(start_pos)
+        self.delete(start_pos, INSERT)
+        self.insert(INSERT, w)
+        print(w)
 
     def generate_listbox(self, words):
         if not self.lb_on:
@@ -43,6 +67,7 @@ class AutocompleteText(Text):
                 self.lb.activate(index)
 
     def selection(self, event):
+        print('Selection')
         if self.lb_on:
             start_pos = self.index(INSERT)
             while(True):
@@ -72,6 +97,7 @@ class AutocompleteText(Text):
                     self.lista.add(node.id)
         except:
             print('Highlight line for bad syntax')
+
 
 def main():
     root = Tk()
