@@ -11,7 +11,16 @@ class AutocompleteText(Text):
         self.lb_on = False
 
     def called_autocomplete(self, event):
-        requested_word = self.get('1.0', END).strip().split()[-1]
+        # requested_word = self.get('1.0', END).strip().split()[-1]
+        start_pos = self.index(INSERT)
+        while(True):
+            start_ind2 = start_pos.split('.')[1]
+            start_ind2 = str(int(start_ind2) - 1)
+            start_pos = start_pos.split('.')[0] + '.' + start_ind2
+            if start_ind2 == '0' or\
+                    re.match(r"\s", self.get(start_pos)):
+                break
+        requested_word = self.get(start_pos, INSERT)
         self.take_lista()
         self.generate_listbox(self.suitable_words(requested_word))
 
