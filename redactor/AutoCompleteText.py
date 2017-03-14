@@ -49,7 +49,7 @@ class AutocompleteText(Text):
                 start_ind2 = str(int(start_ind2) - 1)
                 start_pos = start_pos.split('.')[0] + '.' + start_ind2
                 if start_ind2 == '0' or\
-                        not re.match(r"\s", self.get(start_pos)):
+                        re.match(r"\s", self.get(start_pos)):
                     break
             self.delete(start_pos, INSERT)
             self.insert(INSERT, self.lb.get(ACTIVE))
