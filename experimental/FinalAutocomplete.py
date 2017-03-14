@@ -23,17 +23,21 @@ class AutocompleteText(Text):
         for w in words:
             self.sugg_menu.add_command(label=w,
                                        command=lambda: self.insert_w(w))
+
         self.sugg_menu.tk_popup(x=self.root.winfo_x(), y=self.root.winfo_y())
 
     def insert_w(self, w):
         print('Inserting....', w)
         start_pos = self.index(INSERT)
         while(True):
+            # main
             start_ind2 = start_pos.split('.')[1]
             start_ind2 = str(int(start_ind2) - 1)
             start_pos = start_pos.split('.')[0] + '.' + start_ind2
             if start_ind2 == '0' or\
-                    not re.match(r"\s", self.get(start_pos)):
+                    re.match(r"\s", self.get(start_pos)):
+                print(self.get(start_pos))
+                print(start_ind2, re.match(r"\s", self.get(start_pos)))
                 break
         print(start_pos)
         self.delete(start_pos, INSERT)
@@ -87,9 +91,9 @@ class AutocompleteText(Text):
         return [word for word in self.lista if re.match(pattern, word)]
 
     def take_lista(self):
-        written_code = ast.parse(self.get('1.0', END).strip())
-        self.lista = set()
         try:
+            written_code = ast.parse(self.get('1.0', END).strip())
+            self.lista = set()
             for node in ast.walk(written_code):
                 if isinstance(node, ast.FunctionDef):
                     self.lista.add(node.name)
