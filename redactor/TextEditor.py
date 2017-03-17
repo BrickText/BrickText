@@ -12,6 +12,7 @@ class TextEditor():
         self.font = font.Font(size=settings["letter_size"])
         self.text_panel = AutocompleteText(self.root, font=self.font)
         self.text_panel.pack(side=RIGHT, fill=BOTH, expand=YES)
+        self.set_background_color()
         self.set_tabs()
 
     def start(self):
@@ -27,3 +28,8 @@ class TextEditor():
         f = font.Font(font=self.text_panel['font'])
         tab_width = f.measure(' ' * 3)
         self.text_panel.config(tabs=(tab_width,))
+
+    def set_background_color(self):
+        with open('settings/redactor_settings.json') as rs:
+            bg = eval(rs.read())['background_color']
+        self.text_panel.configure(background=bg)

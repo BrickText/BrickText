@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter.filedialog import asksaveasfilename, askopenfile
 from tkinter.colorchooser import *
+import json
 
 from menu.EditCommands import EditCommands
 from menu.ViewCommands import ViewCommands
@@ -74,8 +75,8 @@ class AppMenu(Frame):
 
         preferencesmenu.add_command(label="Language preferences",
                                     command=self.language_preferences)
-        # preferencesmenu.add_command(label="Editor preferences",
-        #                             command=self.editor_preferences)
+        preferencesmenu.add_command(label="Editor preferences",
+                                    command=self.editor_preferences)
 
         self.menubar.add_cascade(label="Preferences", menu=preferencesmenu)
 
@@ -140,13 +141,27 @@ class AppMenu(Frame):
         # b = Button(self.t, text='Ok', command=self.close)
         # b.pack()
 
-    # def editor_preferences(self):
-    #     print("editor")
+    def editor_preferences(self):
+        self.number_of_windows += 1
+        self.t = Toplevel(self)
+        self.t.wm_title('Editor preferences')
+        l = Label(self.t, text='background_color')
+        l.pack(side='top', padx=10, pady=10)
+        b = Button(self.t, text='Select Color', command=self.getColor)
+        b.pack(side='top', padx=10, pady=10)
+        self.e = None
 
     def getColor(self):
         self.color_keyword = askcolor()[1]
-        self.keyword = self.e.get()
-        # print(color)
+        if self.e:
+            self.keyword = self.e.get()
+        else:
+            self.text_panel.configure(background=self.color_keyword)
+            with open('settings/redactor_settings.json') as data_file:
+                rs = eval(data_file.read())
+            rs['background_color'] = self.color_keyword
+            with open('settings/redactor_settings.json', 'w') as data_file:
+                data_file.write(json.dumps(rs))
 
     def close(self):
         self.t.destroy()

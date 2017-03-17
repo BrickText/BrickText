@@ -62,6 +62,7 @@ class AutocompleteText(Text):
         print(w)
         self.sugg_menu.destroy()
 
+
     def suitable_words(self, requested_word):
         pattern = re.compile('.*' + requested_word + '.*')
         return [word for word in self.lista if re.match(pattern, word) and
