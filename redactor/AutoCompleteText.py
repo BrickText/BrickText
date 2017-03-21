@@ -25,11 +25,12 @@ class AutocompleteText(Text):
 
     def suggestion_menu(self, words):
         self.sugg_menu = Menu(self.root)
-        for w in words:
-            self.sugg_menu.add_command(label=w,
-                                       command=lambda w=w: self.insert_w(w))
-            print("Label:", w)
-        self.position_menu()
+        if words:
+            for w in words:
+                self.sugg_menu.add_command(label=w,
+                                           command=lambda w=w: self.insert_w(w))
+                print("Label:", w)
+            self.position_menu()
 
     def position_menu(self):
         row = self.index(INSERT)[0]
