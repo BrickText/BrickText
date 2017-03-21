@@ -24,7 +24,7 @@ class AutocompleteText(Text):
         self.suggestion_menu(self.suitable_words(requested_word))
 
     def suggestion_menu(self, words):
-        self.sugg_menu = Menu(self.root)
+        self.sugg_menu = Menu(self.root, tearoff=0)
         if words:
             for w in words:
                 self.sugg_menu.add_command(label=w,
