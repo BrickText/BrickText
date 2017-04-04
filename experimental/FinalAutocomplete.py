@@ -13,9 +13,14 @@ class AutocompleteText(Text):
         Text.__init__(self, root, *args, **kwargs)
         self.lista = set()
         self.root = root
+        self.obj_called = False
         self.bind("<Control-space>", self.called_autocomplete)
+        self.bind(".", self.called_autocomplete)
 
     def called_autocomplete(self, event):
+        if(event.char == "."):
+            self.obj_called = True
+
         requested_word = self.get(self.get_start_pos(), INSERT).strip()
         self.take_lista()
         self.suggestion_menu(self.suitable_words(requested_word))
@@ -58,6 +63,7 @@ class AutocompleteText(Text):
         self.insert(INSERT, w)
         print(w)
         self.sugg_menu.destroy()
+        self.obj_called = False
 
     def suitable_words(self, requested_word):
         pattern = re.compile('.*' + requested_word + '.*')
@@ -68,11 +74,19 @@ class AutocompleteText(Text):
         try:
             written_code = ast.parse(self.get('1.0', END).strip())
             unique_lista = set()
-            for node in ast.walk(written_code):
-                if isinstance(node, ast.FunctionDef):
-                    unique_lista.add(node.name)
-                if isinstance(node, ast.Name):
-                    unique_lista.add(node.id)
+            if self.obj_called:
+                class_definitions = [node for node in module.body
+                     if isinstance(node, ast.ClassDef)]
+                for class_def in class_definitions:
+                    for node in class_def.body:
+                        if isinstance(node, ast.FunctionDef):
+                            unique_lista.add(node.name)
+            else:
+                for node in ast.walk(written_code):
+                    if isinstance(node, ast.FunctionDef):
+                        unique_lista.add(node.name)
+                    if isinstance(node, ast.Name):
+                        unique_lista.add(node.id)
         except:
             print("Run time error")
         finally:
