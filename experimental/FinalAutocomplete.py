@@ -26,12 +26,14 @@ class AutocompleteText(Text):
         self.suggestion_menu(self.suitable_words(requested_word))
 
     def suggestion_menu(self, words):
-        self.sugg_menu = Menu(self.root)
-        for w in words:
-            self.sugg_menu.add_command(label=w,
-                                       command=lambda w=w: self.insert_w(w))
-            print("Label:", w)
-        self.position_menu()
+        if(len(words) > 0):
+            self.sugg_menu = Menu(self.root, tearoff=0)
+            for w in words:
+                self.sugg_menu.add_command(label=w,
+                                           command=lambda w=w: self.insert_w(w))
+                print("Label:", w)
+            self.position_menu()
+        self.obj_called = False
 
     def position_menu(self):
         row = self.index(INSERT)[0]
@@ -49,7 +51,7 @@ class AutocompleteText(Text):
             start_ind2 = start_pos.split('.')[1]
             start_ind2 = str(int(start_ind2) - 1)
             start_pos = start_pos.split('.')[0] + '.' + start_ind2
-            if re.match(r"\s", self.get(start_pos)):
+            if re.match(r"\s", self.get(start_pos)) or self.get(start_pos) == '.':
                 start_ind2 = str(int(start_ind2) + 1)
                 start_pos = start_pos.split('.')[0] + '.' + start_ind2
                 break
@@ -75,7 +77,7 @@ class AutocompleteText(Text):
             written_code = ast.parse(self.get('1.0', END).strip())
             unique_lista = set()
             if self.obj_called:
-                class_definitions = [node for node in module.body
+                class_definitions = [node for node in written_code.body
                      if isinstance(node, ast.ClassDef)]
                 for class_def in class_definitions:
                     for node in class_def.body:
