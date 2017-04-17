@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import font
+import os
 
 from settings.SettingsVariables import settings
 from redactor.AutoCompleteText import AutocompleteText
@@ -30,6 +31,7 @@ class TextEditor():
         self.text_panel.config(tabs=(tab_width,))
 
     def set_background_color(self):
-        with open('settings/redactor_settings.json') as rs:
+        with open(os.path.dirname(__file__) +
+                  '/../settings/redactor_settings.json') as rs:
             bg = eval(rs.read())['background_color']
         self.text_panel.configure(background=bg)
