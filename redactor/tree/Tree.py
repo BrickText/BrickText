@@ -9,6 +9,7 @@ class Tree(tk.Frame):
     def __init__(self, root, path):
         tk.Frame.__init__(self, root)
         self.tree = ttk.Treeview(root)
+        self.tree.bind("<Double-Button-1>", self.itemEvent)
         ysb = ttk.Scrollbar(self.tree, orient='vertical',
                             command=self.tree.yview)
         xsb = ttk.Scrollbar(self.tree, orient='horizontal',
@@ -32,3 +33,23 @@ class Tree(tk.Frame):
             oid = self.tree.insert(parent, 'end', text=p, open=False)
             if isdir:
                 self.process_directory(oid, abspath)
+
+    def itemEvent(self, event):
+        item = self.tree.selection()[0]
+        path = self.get_path(item)
+        if os.path.isfile(path):
+            pass
+
+    def get_path(self, item):
+        item_path = [item]
+        path = ''
+        while item != '':
+            item = self.tree.parent(item)
+            if item != '':
+                item_path.append(item)
+        for el in item_path[::-1]:
+            part = self.tree.item(el, 'text')
+            if part[0] != '/':
+                part = '/' + part
+            path += part
+        return path
