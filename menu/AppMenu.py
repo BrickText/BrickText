@@ -34,7 +34,6 @@ class AppMenu(Frame):
         self.gen_viewmenu()
         self.gen_preferencesmenu()
 
-        self.filename = ''
         root.config(menu=self.menubar)
 
     def gen_filemenu(self):
@@ -84,7 +83,7 @@ class AppMenu(Frame):
     def open(self):
         file = askopenfile(parent=self.root, mode='rb',
                            title='Select a file')
-        self.filename = file.name
+        self.text.set_filename(file.name)
         if file is not None:
             contents = file.read()
             self.text_panel.delete('1.0', END)
@@ -94,12 +93,12 @@ class AppMenu(Frame):
 
     # Saves current file
     def save(self):
-        if not self.filename:
+        if not self.text.get_filename():
             print('calling save as')
             self.save_as()
         else:
             file_text = self.text_panel.get("1.0", END)
-            with open(self.filename, 'w') as f:
+            with open(self.text.get_filename(), 'w') as f:
                 f.write(file_text)
 
     # Saves current file as another one
@@ -109,13 +108,14 @@ class AppMenu(Frame):
             full_text = self.text_panel.get("1.0", END)
             with open(filename, 'w') as f:
                 f.write(full_text)
-        self.filename = filename
+        self.text.set_filename(filename)
 
     def exit(self):
         self.root.destroy()
 
     def get_file_language(self):
-        return self.filename.split('.')[1] if self.filename else False
+        return self.text.get_filename().split('.')[1]\
+               if self.text.get_filename() else False
 
     def language_preferences(self):
         self.number_of_windows += 1

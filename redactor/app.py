@@ -41,9 +41,9 @@ def main():
                    width=settings["DEFAULT_WIDTH"],
                    height=settings["DEFAULT_WIDTH"],
                    bg="red")
-    tree = Tree(editor.get_root(), './')
+    colors = Coloring(editor, 'blank')
+    tree = Tree(editor, editor.get_root(), './', colors)
     lines = Lines(editor.get_root(), editor.get_text_panel())
-    colors = Coloring(editor, 'python')
     menu = AppMenu(editor.get_root(), editor.get_text_panel(), colors,
                    editor, lines)
     if len(argv) > 1:
@@ -54,7 +54,7 @@ def main():
         with open(path, "r+") as f:
             contents = f.read()
         editor.get_text_panel().insert('1.0', contents)
-        menu.filename = path
+        editor.set_filename(path)
         colors.reset_tags(languages[menu.get_file_language()])
     refresher(editor.get_root(), colors, lines, menu)
     editor.start()

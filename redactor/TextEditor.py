@@ -13,6 +13,7 @@ class TextEditor():
         self.font = font.Font(size=settings["letter_size"])
         self.text_panel = AutocompleteText(self.root, font=self.font)
         self.text_panel.pack(side=RIGHT, fill=BOTH, expand=YES)
+        self.filename = ''
         self.set_background_color()
         self.set_tabs()
 
@@ -24,6 +25,15 @@ class TextEditor():
 
     def get_text_panel(self):
         return self.text_panel
+
+    def get_filename(self):
+        return self.filename
+
+    def get_file_language(self):
+        return self.filename.split('.')[1] if self.filename else False
+
+    def set_filename(self, filename):
+        self.filename = filename
 
     def set_tabs(self):
         f = font.Font(font=self.text_panel['font'])

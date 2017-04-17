@@ -1,12 +1,16 @@
 import os
 import tkinter as tk
 import tkinter.ttk as ttk
-
 from tkinter import *
+
+from settings.LanguageSettings import languages
 
 
 class Tree(tk.Frame):
-    def __init__(self, root, path):
+    def __init__(self, editor, root, path, color):
+        self.editor = editor
+        self.root = root
+        self.color = color
         tk.Frame.__init__(self, root)
         self.tree = ttk.Treeview(root)
         self.tree.bind("<Double-Button-1>", self.itemEvent)
@@ -38,7 +42,13 @@ class Tree(tk.Frame):
         item = self.tree.selection()[0]
         path = self.get_path(item)
         if os.path.isfile(path):
-            pass
+            self.editor.set_filename(path)
+            with open(path, 'r') as file:
+                contents = file.read()
+                self.editor.get_text_panel().delete('1.0', END)
+                self.editor.get_text_panel().insert('1.0', contents)
+                self.color.reset_tags(languages[self.editor.
+                                                get_file_language()])
 
     def get_path(self, item):
         item_path = [item]
