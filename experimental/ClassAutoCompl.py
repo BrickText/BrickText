@@ -12,7 +12,7 @@ class A():
 
     # class_variable = 2
 
-aaaaaaaaaaaaaaaaa = A(23)
+a = A(23)
 """)
 
 class_definitions = [node for node in module.body
