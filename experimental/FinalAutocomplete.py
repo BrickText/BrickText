@@ -13,20 +13,30 @@ class AutocompleteText(Text):
         Text.__init__(self, root, *args, **kwargs)
         self.lista = set()
         self.root = root
+        self.obj_called = False
         self.bind("<Control-space>", self.called_autocomplete)
+        self.bind(".", self.called_autocomplete)
 
     def called_autocomplete(self, event):
+        if(event.char == "."):
+            print("DOT CALLED")
+            self.obj_called = True
+
         requested_word = self.get(self.get_start_pos(), INSERT).strip()
-        self.take_lista()
+        # print("~~~~~ " + requested_word + " ~~~~~")
+        self.take_lista(requested_word)
+        print(self.lista ," taken")
         self.suggestion_menu(self.suitable_words(requested_word))
 
     def suggestion_menu(self, words):
-        self.sugg_menu = Menu(self.root)
-        for w in words:
-            self.sugg_menu.add_command(label=w,
-                                       command=lambda w=w: self.insert_w(w))
-            print("Label:", w)
-        self.position_menu()
+        if(len(words) > 0):
+            self.sugg_menu = Menu(self.root, tearoff=0)
+            for w in words:
+                self.sugg_menu.add_command(label=w,
+                                           command=lambda w=w: self.insert_w(w))
+                print("Label:", w)
+            self.position_menu()
+        self.obj_called = False
 
     def position_menu(self):
         row = self.index(INSERT)[0]
@@ -44,7 +54,7 @@ class AutocompleteText(Text):
             start_ind2 = start_pos.split('.')[1]
             start_ind2 = str(int(start_ind2) - 1)
             start_pos = start_pos.split('.')[0] + '.' + start_ind2
-            if re.match(r"\s", self.get(start_pos)):
+            if re.match(r"\s", self.get(start_pos)) or self.get(start_pos) == '.':
                 start_ind2 = str(int(start_ind2) + 1)
                 start_pos = start_pos.split('.')[0] + '.' + start_ind2
                 break
@@ -56,23 +66,43 @@ class AutocompleteText(Text):
         print('Inserting....', w)
         self.delete(self.get_start_pos(), INSERT)
         self.insert(INSERT, w)
-        print(w)
         self.sugg_menu.destroy()
+        self.obj_called = False
 
     def suitable_words(self, requested_word):
-        pattern = re.compile('.*' + requested_word + '.*')
-        return [word for word in self.lista if re.match(pattern, word) and
-                word != requested_word]
+        if(self.obj_called):
+            return [word for word in self.lista]
+        else:
+            pattern = re.compile('.*' + requested_word + '.*')
+            return [word for word in self.lista if re.match(pattern, word) and
+                    word != requested_word]
 
-    def take_lista(self):
+    def take_var_type(self, requested_word, parsed_code):
+        for node in ast.walk(parsed_code):
+            if(isinstance(node, ast.Assign)):
+                if(isinstance(node.value, ast.Call)):
+                    if(node.targets[0].id == requested_word):
+                        return node.value.func.id
+
+    def take_lista(self, requested_word):
         try:
             written_code = ast.parse(self.get('1.0', END).strip())
             unique_lista = set()
-            for node in ast.walk(written_code):
-                if isinstance(node, ast.FunctionDef):
-                    unique_lista.add(node.name)
-                if isinstance(node, ast.Name):
-                    unique_lista.add(node.id)
+            if self.obj_called:
+                class_type = self.take_var_type(requested_word, written_code)
+                class_definitions = [node for node in written_code.body
+                     if isinstance(node, ast.ClassDef)]
+                for class_def in class_definitions:
+                    if(class_type == class_def.name):
+                        for node in class_def.body:
+                            if isinstance(node, ast.FunctionDef):
+                                unique_lista.add(node.name)
+            else:
+                for node in ast.walk(written_code):
+                    if isinstance(node, ast.FunctionDef):
+                        unique_lista.add(node.name)
+                    if isinstance(node, ast.Name):
+                        unique_lista.add(node.id)
         except:
             print("Run time error")
         finally:
