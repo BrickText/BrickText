@@ -48,7 +48,8 @@ class AutocompleteText(Text):
             FONT_SIZE * (len(self.get(row + '.0', INSERT)) + 1)
 
         menu_y = self.root.winfo_y() + FONT_SIZE * int(row)
-
+        # CHECK THIS AND USE IT
+        # self.bbox(insert)
         self.sugg_menu.tk_popup(x=menu_x, y=menu_y)
 
     def get_start_pos(self):
