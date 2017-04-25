@@ -6,6 +6,7 @@ import json
 from menu.EditCommands import EditCommands
 from menu.ViewCommands import ViewCommands
 from settings.LanguageSettings import languages
+from settings.SettingsVariables import settings
 
 
 class AppMenu(Frame):
@@ -145,10 +146,20 @@ class AppMenu(Frame):
         self.number_of_windows += 1
         self.t = Toplevel(self)
         self.t.wm_title('Editor preferences')
+
         l = Label(self.t, text='background_color')
         l.pack(side='top', padx=10, pady=10)
         b = Button(self.t, text='Select Color', command=self.getColor)
         b.pack(side='top', padx=10, pady=10)
+
+        l = Label(self.t, text='Size')
+        l.pack(side='top', padx=10, pady=10)
+        e = Entry(self.t)
+        e.pack(side='top')
+        b = Button(self.t, text='Ok',
+                   command=lambda: self.get_size(e.get()))
+        b.pack(side='top', padx=10, pady=10)
+
         self.e = None
 
     def getColor(self):
@@ -162,6 +173,12 @@ class AppMenu(Frame):
             rs['background_color'] = self.color_keyword
             with open('settings/redactor_settings.json', 'w') as data_file:
                 data_file.write(json.dumps(rs))
+
+    def get_size(self, size):
+        settings['letter_size'] = int(size)
+        self.text.font.configure(size=settings['letter_size'])
+        self.lines.font.configure(size=settings["letter_size"])
+        self.lines.step = settings['letter_size']
 
     def close(self):
         self.t.destroy()

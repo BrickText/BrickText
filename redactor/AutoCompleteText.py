@@ -47,6 +47,7 @@ class AutocompleteText(Text):
         x, y, _, _ = self.bbox(INSERT)
         menu_x = self.root.winfo_x() + x + 80
         menu_y = self.root.winfo_y() + y
+
         self.sugg_menu.tk_popup(x=menu_x, y=menu_y)
 
     def get_start_pos(self):
