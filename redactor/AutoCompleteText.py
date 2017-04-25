@@ -1,3 +1,5 @@
+# TODO Ask niki for how to see if his menu is opened 
+
 from tkinter import *
 import re
 import ast
@@ -21,7 +23,7 @@ class AutocompleteText(Text):
         self.bind(".", self.called_autocomplete)
 
     def called_autocomplete(self, event):
-        if(event.char == "."):
+        if event.char == ".":
             print("DOT CALLED")
             self.obj_called = True
 
@@ -32,7 +34,7 @@ class AutocompleteText(Text):
         self.suggestion_menu(self.suitable_words(requested_word))
 
     def suggestion_menu(self, words):
-        if(len(words) > 0):
+        if len(words) > 0 :
             self.sugg_menu = Menu(self.root, tearoff=0)
             for w in words:
                 self.sugg_menu.add_command(label=w,
@@ -42,18 +44,14 @@ class AutocompleteText(Text):
         self.obj_called = False
 
     def position_menu(self):
-        row = self.index(INSERT)[0]
-        print('Tabs LEngth -', len(self.get(row + '.0', INSERT)))
-        menu_x = self.root.winfo_x() +\
-            FONT_SIZE * (len(self.get(row + '.0', INSERT)) + 1)
-
-        menu_y = self.root.winfo_y() + FONT_SIZE * int(row)
-
+        x, y, _, _ = self.bbox(INSERT)
+        menu_x = self.root.winfo_x() + x + 80
+        menu_y = self.root.winfo_y() + y
         self.sugg_menu.tk_popup(x=menu_x, y=menu_y)
 
     def get_start_pos(self):
         start_pos = self.index(INSERT)
-        while(True):
+        while True:
             start_ind2 = start_pos.split('.')[1]
             start_ind2 = str(int(start_ind2) - 1)
             start_pos = start_pos.split('.')[0] + '.' + start_ind2
