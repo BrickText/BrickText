@@ -6,3 +6,9 @@ Revolutionary text editor
 ```
 $ python3 app.py
 ```
+
+OR
+
+```
+$ ./app.py
+```
