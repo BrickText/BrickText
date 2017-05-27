@@ -3,7 +3,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import *
 
-from settings.LanguageSettings import languages
+from redactor.settings.LanguageSettings import languages
 
 
 class Tree(tk.Frame):

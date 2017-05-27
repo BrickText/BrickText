@@ -4,7 +4,7 @@ from tkinter import *
 import re
 import ast
 
-from settings.SettingsVariables import settings
+from redactor.settings.SettingsVariables import settings
 
 FONT_SIZE = settings["letter_size"]
 
@@ -30,11 +30,11 @@ class AutocompleteText(Text):
         requested_word = self.get(self.get_start_pos(), INSERT).strip()
         # print("~~~~~ " + requested_word + " ~~~~~")
         self.take_lista(requested_word)
-        print(self.lista ," taken")
+        print(self.lista, " taken")
         self.suggestion_menu(self.suitable_words(requested_word))
 
     def suggestion_menu(self, words):
-        if len(words) > 0 :
+        if len(words) > 0:
             self.sugg_menu = Menu(self.root, tearoff=0)
             for w in words:
                 self.sugg_menu.add_command(label=w,
@@ -45,7 +45,7 @@ class AutocompleteText(Text):
 
     def position_menu(self):
         x, y, _, _ = self.bbox(INSERT)
-        menu_x = self.root.winfo_x() + x + 80
+        menu_x = self.root.winfo_x() + x + 370
         menu_y = self.root.winfo_y() + y
 
         self.sugg_menu.tk_popup(x=menu_x, y=menu_y)

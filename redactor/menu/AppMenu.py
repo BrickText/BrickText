@@ -3,10 +3,10 @@ from tkinter.filedialog import asksaveasfilename, askopenfile
 from tkinter.colorchooser import *
 import json
 
-from menu.EditCommands import EditCommands
-from menu.ViewCommands import ViewCommands
-from settings.LanguageSettings import languages
-from settings.SettingsVariables import settings
+from redactor.menu.EditCommands import EditCommands
+from redactor.menu.ViewCommands import ViewCommands
+from redactor.settings.LanguageSettings import languages
+from redactor.settings.SettingsVariables import settings
 
 
 class AppMenu(Frame):

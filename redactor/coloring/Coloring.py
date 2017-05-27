@@ -1,6 +1,6 @@
 import re
 
-from coloring.config_tags import config_tags, reset_tags
+from redactor.coloring.config_tags import config_tags, reset_tags
 
 
 class Coloring:

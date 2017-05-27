@@ -1,5 +1,6 @@
 from tkinter import *
-from settings.SettingsVariables import settings
+
+from redactor.settings.SettingsVariables import settings
 
 
 class Lines:

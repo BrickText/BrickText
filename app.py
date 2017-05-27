@@ -3,15 +3,18 @@ from sys import argv
 import os
 import json
 
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+os.system('export PYTHONPATH=/usr/bin/python3:' +
+          os.path.dirname(os.path.realpath(__file__)))
 
 from redactor.TextEditor import TextEditor
-from menu.AppMenu import AppMenu
+from redactor.menu.AppMenu import AppMenu
 from redactor.ResizingCanvas import ResizingCanvas
-from coloring.Coloring import Coloring
-from set_lines.Lines import Lines
-from tree.Tree import Tree
-from settings.SettingsVariables import settings
-from settings.LanguageSettings import languages
+from redactor.coloring.Coloring import Coloring
+from redactor.set_lines.Lines import Lines
+from redactor.tree.Tree import Tree
+from redactor.settings.SettingsVariables import settings
+from redactor.settings.LanguageSettings import languages
 
 
 def refresher(root, colors, lines, menu):
