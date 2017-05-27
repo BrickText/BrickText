@@ -3,7 +3,7 @@ from tkinter import font
 import os
 
 from redactor.settings.SettingsVariables import settings
-from redactor.AutoCompleteText import AutocompleteText
+from redactor.autocomplete.AutoCompleteText import AutocompleteText
 
 
 class TextEditor():
@@ -17,6 +17,7 @@ class TextEditor():
         self.set_background_color()
         self.set_tabs()
 
+    # Start editor
     def start(self):
         self.root.mainloop()
 
@@ -35,13 +36,15 @@ class TextEditor():
     def set_filename(self, filename):
         self.filename = filename
 
+    # Set tab size
     def set_tabs(self):
         f = font.Font(font=self.text_panel['font'])
         tab_width = f.measure(' ' * 3)
         self.text_panel.config(tabs=(tab_width,))
 
+    # Set background color
     def set_background_color(self):
         with open(os.path.dirname(__file__) +
-                  '/settings/redactor_settings.json') as rs:
+                  '/../settings/redactor_settings.json') as rs:
             bg = eval(rs.read())['background_color']
         self.text_panel.configure(background=bg)

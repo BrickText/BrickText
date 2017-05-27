@@ -8,9 +8,9 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 os.system('export PYTHONPATH=/usr/bin/python3:' +
           os.path.dirname(os.path.realpath(__file__)))
 
-from redactor.TextEditor import TextEditor
+from redactor.editor.TextEditor import TextEditor
 from redactor.menu.AppMenu import AppMenu
-from redactor.ResizingCanvas import ResizingCanvas
+from redactor.resizing.ResizingCanvas import ResizingCanvas
 from redactor.coloring.Coloring import Coloring
 from redactor.lines.Lines import Lines
 from redactor.tree.Tree import Tree
