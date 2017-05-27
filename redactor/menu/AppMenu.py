@@ -37,6 +37,7 @@ class AppMenu(Frame):
 
         root.config(menu=self.menubar)
 
+    # Add tab for filemenu menu
     def gen_filemenu(self):
         filemenu = Menu(self.menubar, tearoff=0)
 
@@ -51,6 +52,7 @@ class AppMenu(Frame):
 
         self.menubar.add_cascade(label="File", menu=filemenu)
 
+    # Add tab for edit menu
     def gen_editmenu(self):
         functionality = EditCommands(self.root, self.text_panel)
         editmenu = Menu(self.menubar, tearoff=0)
@@ -61,6 +63,7 @@ class AppMenu(Frame):
 
         self.menubar.add_cascade(label="Edit", menu=editmenu)
 
+    # Add tab for view menu
     def gen_viewmenu(self):
         functionality = ViewCommands(self.root, self.text, self.lines)
         viewmenu = Menu(self.menubar, tearoff=0)
@@ -70,6 +73,7 @@ class AppMenu(Frame):
 
         self.menubar.add_cascade(label='View', menu=viewmenu)
 
+    # Add tab for preferences menu
     def gen_preferencesmenu(self):
         preferencesmenu = Menu(self.menubar, tearoff=0)
 
@@ -114,34 +118,28 @@ class AppMenu(Frame):
     def exit(self):
         self.root.destroy()
 
+    # Get language of current file
     def get_file_language(self):
         return self.text.get_filename().split('.')[1]\
                if self.text.get_filename() else False
 
+    # Add window for language preferences
     def language_preferences(self):
         self.number_of_windows += 1
+
         self.t = Toplevel(self)
         self.t.wm_title('Language preferences')
+
         l = Label(self.t, text='Keyword')
         l.pack(side='top', padx=10, pady=10)
+
         self.e = Entry(self.t)
         self.e.pack(side='top')
+
         b = Button(self.t, text='Select Color', command=self.getColor)
         b.pack(side='top', padx=10, pady=10)
-        #     b.pack(side='top', padx=10, pady=10)
-        # vsb = Scrollbar(self.t, orient="vertical", command=self.t.yview)
-        # vsb.pack(side="right", fill="y")
-        # with open('settings/{}_keywords.json'
-        #           .format(languages[self.get_file_language()])) as data_file:
-        #     keywords = eval(data_file.read())
-        # for k, _ in keywords.items():
-        #     l = Label(self.t, text=k)
-        #     l.pack(side='top', padx=10, pady=10)
-        #     b = Button(self.t, text='Select Color', command=self.getColor)
-        #     b.pack(side='top', padx=10, pady=10)
-        # b = Button(self.t, text='Ok', command=self.close)
-        # b.pack()
 
+    # Add window for language preferences
     def editor_preferences(self):
         self.number_of_windows += 1
         self.t = Toplevel(self)
@@ -162,18 +160,24 @@ class AppMenu(Frame):
 
         self.e = None
 
+    # Get input for color
     def getColor(self):
         self.color_keyword = askcolor()[1]
+
         if self.e:
             self.keyword = self.e.get()
         else:
             self.text_panel.configure(background=self.color_keyword)
+
             with open('settings/redactor_settings.json') as data_file:
                 rs = eval(data_file.read())
+
             rs['background_color'] = self.color_keyword
+
             with open('settings/redactor_settings.json', 'w') as data_file:
                 data_file.write(json.dumps(rs))
 
+    # Get input for size
     def get_size(self, size):
         settings['letter_size'] = int(size)
         self.text.font.configure(size=settings['letter_size'])

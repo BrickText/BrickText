@@ -7,6 +7,10 @@ from redactor.settings.LanguageSettings import languages
 
 
 class Tree(tk.Frame):
+    """
+    This class is for set tree
+    """
+
     def __init__(self, editor, root, path, color):
         self.editor = editor
         self.root = root
@@ -30,6 +34,7 @@ class Tree(tk.Frame):
 
         self.tree.pack(side=LEFT, fill=BOTH, expand=1, padx=2, pady=2)
 
+    # Get file tree
     def process_directory(self, parent, path):
         for p in os.listdir(path):
             abspath = os.path.join(path, p)
@@ -38,6 +43,7 @@ class Tree(tk.Frame):
             if isdir:
                 self.process_directory(oid, abspath)
 
+    # Open file from tree
     def itemEvent(self, event):
         item = self.tree.selection()[0]
         path = self.get_path(item)
@@ -50,6 +56,7 @@ class Tree(tk.Frame):
                 self.color.reset_tags(languages[self.editor.
                                                 get_file_language()])
 
+    # Get path of file in tree
     def get_path(self, item):
         item_path = [item]
         path = ''

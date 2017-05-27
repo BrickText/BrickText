@@ -4,6 +4,10 @@ from redactor.settings.SettingsVariables import settings
 
 
 class Lines:
+    """
+    This class is for setting line numbers
+    """
+
     def __init__(self, root, text_panel):
         self.root = root
         self.text_panel = text_panel
@@ -21,6 +25,7 @@ class Lines:
         self.lnText.pack(side=LEFT, fill='y')
         self.lineNumbers = ''
 
+    # Set line numbers
     def getLineNumbers(self):
         line = '0'
         col = ''
@@ -41,6 +46,7 @@ class Lines:
                 ln += (lineMask % line)[-5:]
         return ln
 
+    # Update line numbers
     def updateLineNumbers(self):
         tt = self.lnText
         ln = self.getLineNumbers()

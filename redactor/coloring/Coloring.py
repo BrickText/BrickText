@@ -4,17 +4,24 @@ from redactor.coloring.config_tags import config_tags, reset_tags
 
 
 class Coloring:
+    """
+    This class is for coloring
+    """
+
     def __init__(self, text_editor, language):
         self.root = text_editor.get_root()
         self.text_widget = text_editor.get_text_panel()
         self.language = language
         self.keywords = config_tags(self.text_widget, language)
+
+        # Regex for look of word that need coloring
         self.pattern = r"\w+\(|\w+|([\"'])(?:(?=(\\?))\2.)*?\1"
 
     def reset_tags(self, new_language):
         self.keywords = reset_tags(self.text_widget, new_language,
                                    self.language)
 
+    # Make coloring for matches
     def coloring(self, indices):
         for f, l in indices:
             word = self.text_widget.get(f, l)
@@ -57,6 +64,7 @@ class Coloring:
                 else:
                     self.text_widget.tag_add('blank', f, l)
 
+    # Find all words and call coloring
     def findall(self, start="1.0", end="end"):
         start = self.text_widget.index(start)
         end = self.text_widget.index(end)
