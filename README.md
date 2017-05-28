@@ -4,11 +4,11 @@ Revolutionary text editor
 ### Run
 
 ```
-$ python3 app.py
+$ python3 BrickText.py
 ```
 
 OR
 
 ```
-$ ./app.py
+$ ./BrickText.py
 ```
