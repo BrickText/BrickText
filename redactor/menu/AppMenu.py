@@ -123,7 +123,7 @@ class AppMenu(Frame):
 
     # Get language of current file
     def get_file_language(self):
-        return self.text.get_filename().split('.')[1]\
+        return self.text.get_filename().split('.')[-1]\
                if self.text.get_filename() else False
 
     # Add window for language preferences

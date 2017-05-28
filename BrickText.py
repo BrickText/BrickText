@@ -46,6 +46,18 @@ def refresher(root, colors, lines, menu):
 
 
 def main():
+    # Get directory path
+    if len(argv) > 1:
+        cwd = os.getcwd()
+        path = cwd + '/' + argv[1]
+        contents = ''
+        if os.path.isfile(path):
+            dir = os.path.dirname(path)
+        else:
+            dir = path
+    else:
+        dir = './'
+
     editor = TextEditor()
 
     ResizingCanvas(editor.get_text_panel(), editor.get_root(),
@@ -55,7 +67,7 @@ def main():
 
     colors = Coloring(editor, 'blank')
 
-    tree = Tree(editor, editor.get_root(), './', colors)
+    tree = Tree(editor, editor.get_root(), dir, colors)
 
     lines = Lines(editor.get_root(), editor.get_text_panel())
 
@@ -64,15 +76,15 @@ def main():
 
     # Open file from Command Line Arguments
     if len(argv) > 1:
-        print(argv[1])
         cwd = os.getcwd()
         path = cwd + '/' + argv[1]
         contents = ''
-        with open(path, "r+") as f:
-            contents = f.read()
-        editor.get_text_panel().insert('1.0', contents)
-        editor.set_filename(path)
-        colors.reset_tags(languages[menu.get_file_language()])
+        if os.path.isfile(path):
+            with open(path, "r+") as f:
+                contents = f.read()
+            editor.get_text_panel().insert('1.0', contents)
+            editor.set_filename(path)
+            colors.reset_tags(languages[menu.get_file_language()])
 
     refresher(editor.get_root(), colors, lines, menu)
 
