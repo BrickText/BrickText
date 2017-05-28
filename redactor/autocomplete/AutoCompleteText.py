@@ -21,6 +21,16 @@ class AutocompleteText(Text):
         self.obj_called = False
         self.bind("<Control-space>", self.called_autocomplete)
         self.bind(".", self.called_autocomplete)
+        self.bind("'", lambda _: self.add_char("'"))
+        self.bind('"', lambda _: self.add_char('"'))
+        self.bind("(", lambda _: self.add_char(")"))
+        self.bind("[", lambda _: self.add_char("]"))
+        self.bind("{", lambda _: self.add_char("}"))
+
+    def add_char(self, w):
+        pos_when_called = self.index(INSERT)
+        self.insert(INSERT, w)
+        self.mark_set("insert", pos_when_called)
 
     def called_autocomplete(self, event):
         if event.char == ".":
@@ -28,26 +38,24 @@ class AutocompleteText(Text):
             self.obj_called = True
 
         requested_word = self.get(self.get_start_pos(), INSERT).strip()
-        # print("~~~~~ " + requested_word + " ~~~~~")
         self.take_lista(requested_word)
-        print(self.lista, " taken")
         self.suggestion_menu(self.suitable_words(requested_word))
 
     def suggestion_menu(self, words):
         if len(words) > 0:
             self.sugg_menu = Menu(self.root, tearoff=0)
             for w in words:
-                self.sugg_menu.add_command(label=w,
-                                           command=lambda w=w: self.insert_w(w))
-                print("Label:", w)
+                self.sugg_menu.add_command(label=w, command=lambda w=w: self.insert_w(w))
             self.position_menu()
         self.obj_called = False
 
     def position_menu(self):
         x, y, _, _ = self.bbox(INSERT)
-        menu_x = self.root.winfo_x() + x + 370
+        menu_x = self.root.winfo_x() + (self.root.winfo_x() - self.winfo_x())  + x
         menu_y = self.root.winfo_y() + y
-
+        print(menu_x)
+        print()
+        
         self.sugg_menu.tk_popup(x=menu_x, y=menu_y)
 
     def get_start_pos(self):

@@ -51,6 +51,9 @@ class AppMenu(Frame):
         filemenu.add_command(label="Exit", command=self.exit)
 
         self.menubar.add_cascade(label="File", menu=filemenu)
+        self.root.bind("<Control-s>", lambda _: self.save())
+        self.root.bind("<Control-o>", lambda _: self.open())
+        self.root.bind("<Control-q>", lambda _: self.exit())
 
     # Add tab for edit menu
     def gen_editmenu(self):
@@ -88,8 +91,8 @@ class AppMenu(Frame):
     def open(self):
         file = askopenfile(parent=self.root, mode='rb',
                            title='Select a file')
-        self.text.set_filename(file.name)
         if file is not None:
+            self.text.set_filename(file.name)
             contents = file.read()
             self.text_panel.delete('1.0', END)
             self.text_panel.insert('1.0', contents)
