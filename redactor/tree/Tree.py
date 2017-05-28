@@ -16,23 +16,24 @@ class Tree(tk.Frame):
         self.root = root
         self.color = color
         tk.Frame.__init__(self, root)
-        self.tree = ttk.Treeview(root)
+        self.tree = ttk.Treeview(self)
         self.tree.bind("<Double-Button-1>", self.itemEvent)
-        ysb = ttk.Scrollbar(self.tree, orient='vertical',
+        ysb = ttk.Scrollbar(self, orient='vertical',
                             command=self.tree.yview)
-        xsb = ttk.Scrollbar(self.tree, orient='horizontal',
+        xsb = ttk.Scrollbar(self, orient='horizontal',
                             command=self.tree.xview)
         self.tree.configure(yscroll=ysb.set, xscroll=xsb.set)
         self.tree.heading('#0', text=path, anchor='w')
-        # self.tree.column("#0", minwidth=0, width=300, stretch=NO)
-
-        ysb.pack(side=RIGHT, fill=Y)
+        self.tree.column("#0", minwidth=250, width=250, stretch=NO)
 
         abspath = os.path.abspath(path)
         root_node = self.tree.insert('', 'end', text=abspath, open=True)
         self.process_directory(root_node, abspath)
 
-        self.tree.pack(side=LEFT, fill=BOTH, expand=1, padx=2, pady=2)
+        ysb.pack(side=RIGHT, fill=Y)
+        xsb.pack(side=BOTTOM, fill=X)
+        self.pack(side=LEFT, fill=BOTH, expand=FALSE, padx=2, pady=2)
+        self.tree.pack(side=LEFT, fill=BOTH, expand=FALSE, padx=2, pady=2)
 
     # Get file tree
     def process_directory(self, parent, path):
