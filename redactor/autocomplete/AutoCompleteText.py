@@ -99,9 +99,7 @@ class AutocompleteText(Text):
         try:
             written_code = ast.parse(self.get('1.0', END).strip())
             unique_lista = set()
-            for item in self.take_well_known_func():
-                unique_lista.add(item)
-
+        
             if self.obj_called:
                 class_type = self.take_var_type(requested_word, written_code)
                 class_definitions = [node for node in written_code.body
@@ -112,11 +110,16 @@ class AutocompleteText(Text):
                             if isinstance(node, ast.FunctionDef):
                                 unique_lista.add(node.name)
             else:
+                for item in self.take_well_known_func():
+                    unique_lista.add(item)
                 for node in ast.walk(written_code):
                     if isinstance(node, ast.FunctionDef):
                         unique_lista.add(node.name)
                     if isinstance(node, ast.Name):
                         unique_lista.add(node.id)
+                    if isinstance(node, ast.ClassDef):
+                        unique_lista.add(node.name)
+
         except:
             print("Run time error")
         finally:
