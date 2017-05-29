@@ -87,7 +87,7 @@ def main():
     lines = Lines(editor.get_root(), editor.get_text_panel())
 
     menu = AppMenu(editor.get_root(), editor.get_text_panel(), colors,
-                   editor, lines)
+                   editor, lines, tree)
 
     # Open file from Command Line Arguments
     if len(argv) > 1:

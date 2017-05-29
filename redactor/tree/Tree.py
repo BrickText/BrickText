@@ -34,6 +34,7 @@ class Tree(tk.Frame):
         xsb.pack(side=BOTTOM, fill=X)
         self.pack(side=LEFT, fill=BOTH, expand=FALSE, padx=2, pady=2)
         self.tree.pack(side=LEFT, fill=BOTH, expand=FALSE, padx=2, pady=2)
+        self.set_background_color()
 
     # Get file tree
     def process_directory(self, parent, path):
@@ -71,3 +72,16 @@ class Tree(tk.Frame):
                 part = '/' + part
             path += part
         return path
+
+    # Set background color
+    def set_background_color(self):
+        with open(os.path.dirname(__file__) +
+                  '/../settings/redactor_settings.json') as rs:
+            data = eval(rs.read())
+            tbg = data['tree_background_color']
+            tfc = data['tree_frame_color']
+            tlc = data['tree_letter_color']
+
+        ttk.Style().configure("Treeview", background=tbg,
+                              foreground=tlc, fieldbackground=tbg)
+        self.configure(background=tfc)
