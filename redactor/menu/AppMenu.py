@@ -29,6 +29,8 @@ class AppMenu(Frame):
         self.new_keywords = {}
         self.color_keyword = None
         self.keyword = None
+        self.string = False
+        self.function = False
 
         self.menubar = Menu(root)
         self.gen_filemenu()
@@ -83,6 +85,8 @@ class AppMenu(Frame):
 
         preferencesmenu.add_command(label="Language preferences",
                                     command=self.language_preferences)
+        preferencesmenu.add_command(label="Common words preferences",
+                                    command=self.common_words_preferences)
         preferencesmenu.add_command(label="Editor preferences",
                                     command=self.editor_preferences)
 
@@ -164,12 +168,38 @@ class AppMenu(Frame):
 
         self.e = None
 
+    def common_words_preferences(self):
+        self.number_of_windows += 1
+
+        self.t = Toplevel(self)
+        self.t.wm_title('Common words preferences')
+
+        l = Label(self.t, text='String')
+        l.pack(side='top', padx=10, pady=10)
+
+        b = Button(self.t, text='Select Color',
+                   command=lambda: self.getColor(string=True))
+        b.pack(side='top', padx=10, pady=10)
+
+        l = Label(self.t, text='Function')
+        l.pack(side='top', padx=10, pady=10)
+
+        b = Button(self.t, text='Select Color',
+                   command=lambda: self.getColor(function=True))
+        b.pack(side='top', padx=10, pady=10)
+
+        self.e = None
+
     # Get input for color
-    def getColor(self):
+    def getColor(self, string=False, function=False):
         self.color_keyword = askcolor()[1]
 
         if self.e:
             self.keyword = self.e.get()
+        elif string:
+            self.string = True
+        elif function:
+            self.function = True
         else:
             self.text_panel.configure(background=self.color_keyword)
 
