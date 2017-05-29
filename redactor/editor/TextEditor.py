@@ -39,7 +39,7 @@ class TextEditor():
     # Set tab size
     def set_tabs(self):
         f = font.Font(font=self.text_panel['font'])
-        tab_width = f.measure(' ' * 3)
+        tab_width = f.measure(' ' * 4)
         self.text_panel.config(tabs=(tab_width,))
 
     # Set background color
