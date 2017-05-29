@@ -10,6 +10,8 @@ class TextEditor():
     def __init__(self):
         self.root = Tk()
         self.root.wm_title("BrickText")
+        self.filename_label = Label(self.root, text = "untitled")
+        self.filename_label.pack()
         self.font = font.Font(size=settings["letter_size"])
         self.text_panel = AutocompleteText(self.root, font=self.font)
         self.text_panel.pack(side=RIGHT, fill=BOTH, expand=YES)

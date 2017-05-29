@@ -52,6 +52,7 @@ class Tree(tk.Frame):
         if os.path.isfile(path):
             self.editor.set_filename(path)
             with open(path, 'r') as file:
+                self.editor.filename_label.config(text=path.split('/')[-1])
                 contents = file.read()
                 self.editor.get_text_panel().delete('1.0', END)
                 self.editor.get_text_panel().insert('1.0', contents)
