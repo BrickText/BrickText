@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.filedialog import asksaveasfilename, askopenfile
 from tkinter.colorchooser import *
 import json
+import os
 
 from redactor.menu.EditCommands import EditCommands
 from redactor.menu.ViewCommands import ViewCommands
@@ -172,12 +173,14 @@ class AppMenu(Frame):
         else:
             self.text_panel.configure(background=self.color_keyword)
 
-            with open('settings/redactor_settings.json') as data_file:
+            with open(os.path.dirname(__file__) +
+                      '/../settings/redactor_settings.json') as data_file:
                 rs = eval(data_file.read())
 
             rs['background_color'] = self.color_keyword
 
-            with open('settings/redactor_settings.json', 'w') as data_file:
+            with open(os.path.dirname(__file__) +
+                      '/../settings/redactor_settings.json', 'w') as data_file:
                 data_file.write(json.dumps(rs))
 
     # Get input for size

@@ -25,11 +25,11 @@ def refresher(root, colors, lines, menu):
 
     # Check for update of color scheme
     if menu.color_keyword and menu.keyword:
-        with open('settings/{}_keywords.json'
+        with open('redactor/settings/{}_keywords.json'
                   .format(languages[menu.get_file_language()])) as data_file:
             keywords = eval(data_file.read())
         keywords[menu.keyword] = menu.color_keyword
-        with open('settings/{}_keywords.json'
+        with open('redactor/settings/{}_keywords.json'
                   .format(languages[menu.get_file_language()]),
                   'w') as data_file:
             data_file.write(json.dumps(keywords))
