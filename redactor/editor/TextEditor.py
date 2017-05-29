@@ -37,6 +37,7 @@ class TextEditor():
 
     def set_filename(self, filename):
         self.filename = filename
+        self.filename_label.config(text=filename.split('/')[-1])
 
     # Set tab size
     def set_tabs(self):
