@@ -33,6 +33,7 @@ class AutocompleteText(Text):
         self.mark_set("insert", pos_when_called)
 
     def called_autocomplete(self, event):
+        print("autocomplete called..")
         if event.char == ".":
             self.obj_called = True
 
@@ -50,7 +51,7 @@ class AutocompleteText(Text):
 
     def position_menu(self):
         x, y, _, _ = self.bbox(INSERT)
-        menu_x = self.root.winfo_x() + 250 + x
+        menu_x = self.root.winfo_x() + settings["side_bar_in_pixels"] + settings["letter_size"] * 4 + x
         menu_y = self.root.winfo_y() + y
         print(menu_x)
         print()
