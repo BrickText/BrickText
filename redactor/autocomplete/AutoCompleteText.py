@@ -34,7 +34,6 @@ class AutocompleteText(Text):
 
     def called_autocomplete(self, event):
         if event.char == ".":
-            print("DOT CALLED")
             self.obj_called = True
 
         requested_word = self.get(self.get_start_pos(), INSERT).strip()
@@ -51,7 +50,7 @@ class AutocompleteText(Text):
 
     def position_menu(self):
         x, y, _, _ = self.bbox(INSERT)
-        menu_x = self.root.winfo_x() + (self.root.winfo_x() - self.winfo_x())  + x
+        menu_x = self.root.winfo_x() + 250 + x
         menu_y = self.root.winfo_y() + y
         print(menu_x)
         print()
