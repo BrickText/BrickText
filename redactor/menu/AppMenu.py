@@ -45,6 +45,7 @@ class AppMenu(Frame):
     def gen_filemenu(self):
         filemenu = Menu(self.menubar, tearoff=0)
 
+        filemenu.add_command(label="New", command=self.new_file)
         filemenu.add_command(label="Open", command=self.open)
         filemenu.add_separator()
 
@@ -55,9 +56,16 @@ class AppMenu(Frame):
         filemenu.add_command(label="Exit", command=self.exit)
 
         self.menubar.add_cascade(label="File", menu=filemenu)
+        self.root.bind("<Control-n>", lambda _: self.new_file())
         self.root.bind("<Control-s>", lambda _: self.save())
         self.root.bind("<Control-o>", lambda _: self.open())
         self.root.bind("<Control-q>", lambda _: self.exit())
+
+    def new_file(self):
+        self.save()
+        self.text_panel.delete(1.0, "end")
+        self.text.set_filename("untitled")
+
 
     # Add tab for edit menu
     def gen_editmenu(self):

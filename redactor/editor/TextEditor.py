@@ -36,8 +36,12 @@ class TextEditor():
         return self.filename.split('.')[1] if self.filename else False
 
     def set_filename(self, filename):
-        self.filename = filename
-        self.filename_label.config(text=filename.split('/')[-1])
+        if(filename == "untitled"):
+            self.filename_label.config(text="untitled")            
+            self.filename = ''
+        else:
+            self.filename = filename
+            self.filename_label.config(text=filename.split('/')[-1])
 
     # Set tab size
     def set_tabs(self):
