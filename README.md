@@ -1,6 +1,11 @@
 # BrickText
 Revolutionary text editor
 
+### Setup
+```
+$ sudo apt-get install python3-tk
+```
+
 ### Run
 
 ```
