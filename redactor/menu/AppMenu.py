@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.filedialog import asksaveasfilename, askopenfile
 from tkinter.colorchooser import *
 import json
+import os
 
 from redactor.menu.EditCommands import EditCommands
 from redactor.menu.ViewCommands import ViewCommands
@@ -17,17 +18,20 @@ class AppMenu(Frame):
     Edit -> Cut, Copy, Paste
     """
 
-    def __init__(self, root, text_panel, color, text, lines):
+    def __init__(self, root, text_panel, color, text, lines, tree):
         Frame.__init__(self, root)
         self.root = root
         self.text_panel = text_panel
         self.color = color
         self.text = text
         self.lines = lines
+        self.tree = tree
         self.number_of_windows = 0
         self.new_keywords = {}
         self.color_keyword = None
         self.keyword = None
+        self.string = False
+        self.function = False
 
         self.menubar = Menu(root)
         self.gen_filemenu()
@@ -82,6 +86,8 @@ class AppMenu(Frame):
 
         preferencesmenu.add_command(label="Language preferences",
                                     command=self.language_preferences)
+        preferencesmenu.add_command(label="Common words preferences",
+                                    command=self.common_words_preferences)
         preferencesmenu.add_command(label="Editor preferences",
                                     command=self.editor_preferences)
 
@@ -148,11 +154,6 @@ class AppMenu(Frame):
         self.t = Toplevel(self)
         self.t.wm_title('Editor preferences')
 
-        l = Label(self.t, text='background_color')
-        l.pack(side='top', padx=10, pady=10)
-        b = Button(self.t, text='Select Color', command=self.getColor)
-        b.pack(side='top', padx=10, pady=10)
-
         l = Label(self.t, text='Size')
         l.pack(side='top', padx=10, pady=10)
         e = Entry(self.t)
@@ -161,24 +162,83 @@ class AppMenu(Frame):
                    command=lambda: self.get_size(e.get()))
         b.pack(side='top', padx=10, pady=10)
 
+        l = Label(self.t, text='Editor background_color')
+        l.pack(side='top', padx=10, pady=10)
+        b = Button(self.t, text='Select Color', command=self.getColor)
+        b.pack(side='top', padx=10, pady=10)
+
+        l = Label(self.t, text='Tree background_color')
+        l.pack(side='top', padx=10, pady=10)
+        b = Button(self.t, text='Select Color',
+                   command=lambda: self.getColor(tree='tree_background_color'))
+        b.pack(side='top', padx=10, pady=10)
+
+        l = Label(self.t, text='Tree frame color')
+        l.pack(side='top', padx=10, pady=10)
+        b = Button(self.t, text='Select Color',
+                   command=lambda: self.getColor(tree='tree_frame_color'))
+        b.pack(side='top', padx=10, pady=10)
+
+        l = Label(self.t, text='Tree letter color')
+        l.pack(side='top', padx=10, pady=10)
+        b = Button(self.t, text='Select Color',
+                   command=lambda: self.getColor(tree='tree_letter_color'))
+        b.pack(side='top', padx=10, pady=10)
+
+        self.e = None
+
+    def common_words_preferences(self):
+        self.number_of_windows += 1
+
+        self.t = Toplevel(self)
+        self.t.wm_title('Common words preferences')
+
+        l = Label(self.t, text='String')
+        l.pack(side='top', padx=10, pady=10)
+
+        b = Button(self.t, text='Select Color',
+                   command=lambda: self.getColor(string=True))
+        b.pack(side='top', padx=10, pady=10)
+
+        l = Label(self.t, text='Function')
+        l.pack(side='top', padx=10, pady=10)
+
+        b = Button(self.t, text='Select Color',
+                   command=lambda: self.getColor(function=True))
+        b.pack(side='top', padx=10, pady=10)
+
         self.e = None
 
     # Get input for color
-    def getColor(self):
+    def getColor(self, string=False, function=False, tree=None):
         self.color_keyword = askcolor()[1]
 
-        if self.e:
-            self.keyword = self.e.get()
-        else:
-            self.text_panel.configure(background=self.color_keyword)
+        if self.color_keyword:
+            if self.e:
+                self.keyword = self.e.get()
+            elif string:
+                self.string = True
+            elif function:
+                self.function = True
+            else:
 
-            with open('settings/redactor_settings.json') as data_file:
-                rs = eval(data_file.read())
+                with open(os.path.dirname(__file__) +
+                          '/../settings/redactor_settings.json') as data_file:
+                    rs = eval(data_file.read())
 
-            rs['background_color'] = self.color_keyword
+                if tree:
+                    rs[tree] = self.color_keyword
+                else:
+                    rs['background_color'] = self.color_keyword
 
-            with open('settings/redactor_settings.json', 'w') as data_file:
-                data_file.write(json.dumps(rs))
+                with open(os.path.dirname(__file__) +
+                          '/../settings/redactor_settings.json', 'w') as data_file:
+                    data_file.write(json.dumps(rs))
+
+                if tree:
+                    self.tree.set_background_color()
+                else:
+                    self.text_panel.configure(background=self.color_keyword)
 
     # Get input for size
     def get_size(self, size):

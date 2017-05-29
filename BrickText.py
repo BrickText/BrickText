@@ -24,12 +24,27 @@ def refresher(root, colors, lines, menu):
     """
 
     # Check for update of color scheme
+    if (menu.string or menu.function) and menu.color_keyword:
+        with open('redactor/settings/common_keywords.json') as data_file:
+            keywords = eval(data_file.read())
+
+        if menu.string:
+            keywords['string'] = menu.color_keyword
+        elif menu.function:
+            keywords['functions'] = menu.color_keyword
+
+        with open('redactor/settings/common_keywords.json', 'w') as data_file:
+            data_file.write(json.dumps(keywords))
+
+        colors.reset_tags('common')
+        menu.string = False
+        menu.function = False
     if menu.color_keyword and menu.keyword:
-        with open('settings/{}_keywords.json'
+        with open('redactor/settings/{}_keywords.json'
                   .format(languages[menu.get_file_language()])) as data_file:
             keywords = eval(data_file.read())
         keywords[menu.keyword] = menu.color_keyword
-        with open('settings/{}_keywords.json'
+        with open('redactor/settings/{}_keywords.json'
                   .format(languages[menu.get_file_language()]),
                   'w') as data_file:
             data_file.write(json.dumps(keywords))
@@ -72,7 +87,7 @@ def main():
     lines = Lines(editor.get_root(), editor.get_text_panel())
 
     menu = AppMenu(editor.get_root(), editor.get_text_panel(), colors,
-                   editor, lines)
+                   editor, lines, tree)
 
     # Open file from Command Line Arguments
     if len(argv) > 1:
