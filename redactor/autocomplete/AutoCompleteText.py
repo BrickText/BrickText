@@ -3,11 +3,12 @@
 from tkinter import *
 import re
 import ast
+import os
 
 from redactor.settings.SettingsVariables import settings
+from redactor.settings.LanguageSettings import languages
 
 FONT_SIZE = settings["letter_size"]
-
 
 class AutocompleteText(Text):
     """
@@ -98,6 +99,9 @@ class AutocompleteText(Text):
         try:
             written_code = ast.parse(self.get('1.0', END).strip())
             unique_lista = set()
+            for item in self.take_well_known_func():
+                unique_lista.add(item)
+
             if self.obj_called:
                 class_type = self.take_var_type(requested_word, written_code)
                 class_definitions = [node for node in written_code.body
@@ -120,3 +124,14 @@ class AutocompleteText(Text):
                 self.lista = list(unique_lista)
             except UnboundLocalError:
                 self.lista = []
+
+    def take_well_known_func(self):
+        result = []
+        language = languages[settings["active_file_lang"]]
+        with open(os.path.dirname(__file__) + '/../settings/{}_keywords.json'
+                                             .format(language)) as data_file:
+            keywords = eval(data_file.read())
+        print("This")
+        result = list(keywords.keys())
+        print("that")
+        return result
